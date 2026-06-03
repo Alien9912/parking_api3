@@ -9,9 +9,7 @@ from app.models import Client, ClientParking, Parking
 
 @pytest.fixture
 def app():
-    app = create_app(
-        {"TESTING": True, "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:"}
-    )
+    app = create_app({"TESTING": True, "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:"})
     with app.app_context():
         _db.create_all()
         yield app
