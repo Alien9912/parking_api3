@@ -1,0 +1,21 @@
+﻿image: python:3.10
+stages:
+  - lint
+  - test
+before_script:
+  - python -V
+  - python -m venv venv
+  - source venv/bin/activate
+  - pip install --upgrade pip
+  - pip install -r requirements-dev.txt
+lint:
+  stage: lint
+  script:
+    - isort --check-only --diff .
+    - black --check --diff .
+    - flake8 .
+    - mypy app tests
+test:
+  stage: test
+  script:
+    - pytest tests/ -v
