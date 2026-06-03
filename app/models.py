@@ -1,4 +1,5 @@
 ﻿"""SQLAlchemy ORM models."""
+
 from datetime import datetime
 
 from flask import Flask
@@ -33,8 +34,7 @@ class ClientParking(db.Model):  # type: ignore[name-defined]
     time_in = db.Column(db.DateTime, default=datetime.utcnow)
     time_out = db.Column(db.DateTime, nullable=True)
     __table_args__ = (
-        UniqueConstraint("client_id", "parking_id",
-                         name="unique_client_parking"),
+        UniqueConstraint("client_id", "parking_id", name="unique_client_parking"),
     )
 
 
