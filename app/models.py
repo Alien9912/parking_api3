@@ -1,4 +1,5 @@
 ﻿"""SQLAlchemy ORM models."""
+
 from datetime import datetime
 
 from flask import Flask
@@ -15,6 +16,7 @@ class Client(db.Model):
     credit_card = db.Column(db.String(50), nullable=True)
     car_number = db.Column(db.String(10), nullable=True)
 
+
 class Parking(db.Model):
     __tablename__ = "parking"
     id = db.Column(db.Integer, primary_key=True)
@@ -23,6 +25,7 @@ class Parking(db.Model):
     count_places = db.Column(db.Integer, nullable=False)
     count_available_places = db.Column(db.Integer, nullable=False)
 
+
 class ClientParking(db.Model):
     __tablename__ = "client_parking"
     id = db.Column(db.Integer, primary_key=True)
@@ -30,7 +33,10 @@ class ClientParking(db.Model):
     parking_id = db.Column(db.Integer, db.ForeignKey("parking.id"))
     time_in = db.Column(db.DateTime, default=datetime.utcnow)
     time_out = db.Column(db.DateTime, nullable=True)
-    __table_args__ = (UniqueConstraint("client_id", "parking_id", name="unique_client_parking"),)
+    __table_args__ = (
+        UniqueConstraint("client_id", "parking_id", name="unique_client_parking"),
+    )
+
 
 def init_db(app: Flask) -> None:
     with app.app_context():
