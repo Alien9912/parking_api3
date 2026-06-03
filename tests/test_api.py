@@ -1,5 +1,4 @@
 ﻿import pytest
-
 from app.models import Client, Parking
 
 
@@ -33,6 +32,7 @@ def test_create_client(client, db):
     }
     response = client.post("/clients", json=data)
     assert response.status_code == 201
+    assert "id" in response.json
     assert Client.query.count() == 1
 
 
@@ -40,6 +40,7 @@ def test_create_parking(client, db):
     data = {"address": "New Parking", "opened": True, "count_places": 20}
     response = client.post("/parkings", json=data)
     assert response.status_code == 201
+    assert "id" in response.json
     parking = Parking.query.first()
     assert parking.count_available_places == 20
 
@@ -52,7 +53,8 @@ def test_enter_parking(client, sample_data, db):
     db.session.commit()
     initial = Parking.query.get(parking_id).count_available_places
     response = client.post(
-        "/client_parkings", json={"client_id": client_id, "parking_id": parking_id}
+        "/client_parkings",
+        json={"client_id": client_id, "parking_id": parking_id},
     )
     assert response.status_code == 200
     new_available = Parking.query.get(parking_id).count_available_places
@@ -65,7 +67,8 @@ def test_exit_parking(client, sample_data):
     parking_id = sample_data["parking"].id
     initial = Parking.query.get(parking_id).count_available_places
     response = client.delete(
-        "/client_parkings", json={"client_id": client_id, "parking_id": parking_id}
+        "/client_parkings",
+        json={"client_id": client_id, "parking_id": parking_id},
     )
     assert response.status_code == 200
     new_available = Parking.query.get(parking_id).count_available_places
@@ -78,7 +81,10 @@ def test_exit_without_card(client, sample_data, db):
     db.session.commit()
     response = client.delete(
         "/client_parkings",
-        json={"client_id": client_obj.id, "parking_id": sample_data["parking"].id},
+        json={
+            "client_id": client_obj.id,
+            "parking_id": sample_data["parking"].id,
+        },
     )
     assert response.status_code == 400
     assert "No credit card" in response.json["error"]

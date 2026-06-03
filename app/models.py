@@ -1,14 +1,11 @@
 ﻿"""SQLAlchemy ORM models."""
-
 from datetime import datetime
-
 from flask import Flask
 from sqlalchemy import UniqueConstraint
-
 from app import db
 
 
-class Client(db.Model):
+class Client(db.Model):  # type: ignore[name-defined]
     __tablename__ = "client"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
@@ -17,7 +14,7 @@ class Client(db.Model):
     car_number = db.Column(db.String(10), nullable=True)
 
 
-class Parking(db.Model):
+class Parking(db.Model):  # type: ignore[name-defined]
     __tablename__ = "parking"
     id = db.Column(db.Integer, primary_key=True)
     address = db.Column(db.String(100), nullable=False)
@@ -26,7 +23,7 @@ class Parking(db.Model):
     count_available_places = db.Column(db.Integer, nullable=False)
 
 
-class ClientParking(db.Model):
+class ClientParking(db.Model):  # type: ignore[name-defined]
     __tablename__ = "client_parking"
     id = db.Column(db.Integer, primary_key=True)
     client_id = db.Column(db.Integer, db.ForeignKey("client.id"))
@@ -34,7 +31,8 @@ class ClientParking(db.Model):
     time_in = db.Column(db.DateTime, default=datetime.utcnow)
     time_out = db.Column(db.DateTime, nullable=True)
     __table_args__ = (
-        UniqueConstraint("client_id", "parking_id", name="unique_client_parking"),
+        UniqueConstraint("client_id", "parking_id",
+                         name="unique_client_parking"),
     )
 
 

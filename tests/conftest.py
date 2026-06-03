@@ -1,15 +1,14 @@
 ﻿from datetime import datetime, timedelta
-
 import pytest
-
-from app import create_app
-from app import db as _db
+from app import create_app, db as _db
 from app.models import Client, ClientParking, Parking
 
 
 @pytest.fixture
 def app():
-    app = create_app({"TESTING": True, "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:"})
+    app = create_app(
+        {"TESTING": True, "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:"}
+    )
     with app.app_context():
         _db.create_all()
         yield app
@@ -30,10 +29,16 @@ def db(app):
 @pytest.fixture
 def sample_data(db):
     client = Client(
-        name="John", surname="Doe", credit_card="1234567890123456", car_number="ABC123"
+        name="John",
+        surname="Doe",
+        credit_card="1234567890123456",
+        car_number="ABC123",
     )
     parking = Parking(
-        address="Test str, 1", opened=True, count_places=10, count_available_places=5
+        address="Test str, 1",
+        opened=True,
+        count_places=10,
+        count_available_places=5,
     )
     db.session.add_all([client, parking])
     db.session.commit()
