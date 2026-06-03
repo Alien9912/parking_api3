@@ -1,5 +1,7 @@
 ﻿import pytest
+
 from app.models import Client, ClientParking, Parking
+
 
 def test_get_clients(client, sample_data):
     response = client.get("/clients")

@@ -1,8 +1,11 @@
 ﻿"""SQLAlchemy ORM models."""
 from datetime import datetime
+
 from flask import Flask
 from sqlalchemy import UniqueConstraint
+
 from app import db
+
 
 class Client(db.Model):
     __tablename__ = "client"

@@ -1,5 +1,6 @@
 ﻿"""Flask application factory."""
 from typing import Any, Dict, Optional
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 

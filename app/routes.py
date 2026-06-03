@@ -1,7 +1,9 @@
 ﻿"""API routes."""
 from datetime import datetime
 from typing import Any, Dict, Tuple
+
 from flask import Blueprint, jsonify, request
+
 from app import db
 from app.models import Client, ClientParking, Parking
 
