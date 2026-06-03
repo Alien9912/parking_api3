@@ -1,6 +1,6 @@
 ﻿import pytest
 
-from app.models import Client, ClientParking, Parking
+from app.models import Client, Parking
 
 
 def test_get_clients(client, sample_data):
