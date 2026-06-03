@@ -32,7 +32,9 @@ class ParkingFactory(SQLAlchemyModelFactory):
     address = Faker("street_address")
     opened = Faker("boolean")
     count_places = Faker("random_int", min=1, max=100)
-    count_available_places = LazyAttribute(lambda o: o.count_places if o.opened else 0)
+    count_available_places = LazyAttribute(
+        lambda o: o.count_places if o.opened else 0
+    )
 
 
 def test_create_client_with_factory(client, db):
@@ -45,7 +47,8 @@ def test_create_client_with_factory(client, db):
     }
     response = client.post("/clients", json=data)
     assert response.status_code == 201
-    saved = Client.query.get(response.json["id"])
+    client_id = response.json["id"]
+    saved = Client.query.get(client_id)
     assert saved.name == data["name"]
 
 
@@ -58,5 +61,6 @@ def test_create_parking_with_factory(client, db):
     }
     response = client.post("/parkings", json=data)
     assert response.status_code == 201
-    saved = Parking.query.get(response.json["id"])
+    parking_id = response.json["id"]
+    saved = Parking.query.get(parking_id)
     assert saved.address == data["address"]
